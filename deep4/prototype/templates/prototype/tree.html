@@ -1,0 +1,14 @@
+
+
+<div id="{{ node.id }}" style="border-color: #1e347b"> #div
+  {% if node.content %} #content
+  {{ node.content.content }}
+  {%  endif %}
+  {%  if node.get_children %}
+    {% for newnode in node.get_children %}
+      {% with node=newnode rootnode=False %}
+        {% include 'prototype/tree.html' %}
+      {% endwith %}
+    {%  endfor %}
+  {%  endif %}
+</div>

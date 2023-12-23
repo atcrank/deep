@@ -1,0 +1,7 @@
+{%  extends 'base.html' %}
+{%  block content %}<ul>
+{%  for node in node_list %}
+  <li><a href="{%  url 'prototype:simple_tree' node.id %}">{{ node.content.content }}</a></li>
+{%  endfor %}
+</ul>
+{%  endblock content %}
