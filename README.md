@@ -1,6 +1,23 @@
-# deep4_kiss
+# deep
 
-a htmx, jqueryui, django, etc toolkit
+A htmx and django personal project with the goals of:
+   - learning more about each with new challenges
+   - how to write less code but more reusable code
+   - just trying things out (django-cookiecutter, django-treebeard etc)
+
+This project currently manages nested unordered (informally ordered, I guess) lists of text entries:
+ - edit an entry (ctrl-click)
+ - add a sibling (+)
+ - add a child  (/)
+ - delete self (x)
+
+Immediate goals:
+ - additional methods on each element (show help string from obj.__doc__ for example)
+ - make ordered relationship elements (a tree subclass)
+ - use content types to make the content item generic
+ - parameterise(?) parent and child html tags
+ - user-awareness and per object group-permissions
+ - django-ninja api setup
 
 [![Built with Cookiecutter Django](https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg?logo=cookiecutter)](https://github.com/cookiecutter/cookiecutter-django/)
 [![Black code style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
