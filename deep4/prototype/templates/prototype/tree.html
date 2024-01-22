@@ -1,14 +1,22 @@
-
-
-<div id="{{ node.id }}" style="border-color: #1e347b"> #div
-  {% if node.content %} #content
-  {{ node.content.content }}
-  {%  endif %}
-  {%  if node.get_children %}
-    {% for newnode in node.get_children %}
-      {% with node=newnode rootnode=False %}
+<div id="cont{{ location.id }}" class="node" style="border-color: #1e347b">
+{% if location.content %}
+  <div id="{{ location.content.id }}"
+       hx-get="{% url 'prototype:simple_form' location.id location.content.id %}"
+       hx-trigger="click[ctrlKey]"
+       hx-swap="outerHTML">
+    <li>{{ location.content.content }}
+      {%  include 'prototype/common/add_child.html' %}
+      {%  include 'prototype/common/add_sibling.html' %}
+      {% include 'prototype/common/delete_element_button.html' %}</li>
+  </div>
+{%  endif %}
+{%  if location.get_children %}
+    <ul id="ul-{{ location.id }}">
+    {% for newnode in location.get_children %}
+      {% with location=newnode rootnode=False %}
         {% include 'prototype/tree.html' %}
       {% endwith %}
     {%  endfor %}
+    </ul>
   {%  endif %}
 </div>

@@ -1,0 +1,5 @@
+<button hx-delete="{% url 'prototype:simple_form' location.id location.content.id %}"
+        hx-trigger="click"
+        hx-target="#cont{{ location.id }}"
+        hx-swap="outerHTML"
+        title="delete">-</button>

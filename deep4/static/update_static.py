@@ -12,7 +12,7 @@ I would have liked to find the equivalent of ":latest" for libraries
 
 STATIC_SOURCE = [
     "https://unpkg.com/htmx.org/dist/htmx.min.js",
-    "https://unpkg.com/idiomorph",
+    "https://unpkg.com/idiomorph@3.0",
     "https://unpkg.com/hyperscript.org@0.9.12",
     "https://code.jquery.com/jquery-3.7.0.min.js",
     "https://code.jquery.com/ui/1.13.2/jquery-ui.min.js",
@@ -32,6 +32,7 @@ def save_files_from_urls(l=STATIC_SOURCE):
         if not os.path.exists(save_dir):
             os.makedirs(save_dir)
         file_name = url.split("/")[-1]
+        file_name.rstrip("@.0123456789")
         save_path = os.path.join(save_dir, file_name)
         try:
             r = requests.get(url)

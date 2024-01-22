@@ -7,7 +7,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>
       {% block title %}
-      deep4_kiss
+      deep4
     {% endblock title %}
   </title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -24,9 +24,11 @@
           crossorigin="anonymous"
           referrerpolicy="no-referrer" />
 <!-- Your stuff: Third-party CSS libraries go here -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/jquery-ui.css' %}" rel="stylesheet" />
 <!-- This file stores project-specific CSS -->
 
-  
+
   <link href="{% static 'css/project.css' %}" rel="stylesheet" />
 
 
@@ -36,7 +38,6 @@
 {# Placed at the top of the document so pages load faster with defer #}
 {% block javascript %}
 
-
 <!-- Bootstrap JS -->
 <script defer
         src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"
@@ -44,17 +45,17 @@
         crossorigin="anonymous"
         referrerpolicy="no-referrer"></script>
 <!-- Your stuff: Third-party javascript libraries go here -->
-
-
+<script type="text/javascript" defer src="{% static 'js/htmx.min.js' %}"></script>
+  <script type="text/javascript" defer src="{% static 'js/idiomorph.js' %}"></script>
+  <script type="text/javascript" defer src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
+<script type="text/javascript" defer src="{% static 'js/jquery-ui.min.js' %}"></script>
 <!-- place project specific Javascript in this file -->
-
-  
-  <script defer src="{% static 'js/project.js' %}"></script>
-
-
+<script type="text/javascript" defer src="{% static 'js/project.js' %}"></script>
 {% endblock javascript %}
+{%  block custom_js %}
+{% endblock custom_js %}
 </head>
-<body>
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
   <div class="mb-1">
     <nav class="navbar navbar-expand-md navbar-light bg-light">
       <div class="container-fluid">

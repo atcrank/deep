@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block custom_js %}
+<script src="{% static 'prototype_node_draggability.js' %}"></script>
+{% endblock custom_js %}
 {% block content %}
 
-{% load static %}
-# This is the base.html extended from prototype
-{% include 'prototype/tree.html' %}
+<ul>{%  for location in location_list %}{% include 'prototype/tree.html' %}{% endfor %}</ul>
 {% endblock content %}
