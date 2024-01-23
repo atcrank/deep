@@ -4,27 +4,31 @@ locality of behavior, all in one
 A single file that holds the model, form, view and template settings
 
 """
-import uuid
-from django.contrib.auth.models import User, Group
-from django.contrib.contenttypes.models import ContentType
-from django.db import models
+
 from django import forms
-from django.views import View
+from django.forms.widgets import Textarea
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.forms.widgets import Textarea
-from .models import SimpleRelation, SimpleThought # , OrderedRelationShip
-from treebeard import mp_tree
+from django.views import View
+
+from .models import SimpleRelation, SimpleThought  # , OrderedRelationShip
+
 
 def get_all_nodes(request):
-    context = {'location_list': SimpleRelation.get_root_nodes()}
-    return render(request, 'prototype/root.html', context)
+    context = {"location_list": SimpleRelation.get_root_nodes()}
+    return render(request, "prototype/root.html", context)
+
+
 class SimpleThoughtForm(forms.ModelForm):
-    template_name = 'prototype/forms/SimpleThoughtForm.html'
+    template_name = "prototype/forms/SimpleThoughtForm.html"
+
     class Meta:
         model = SimpleThought
-        fields = ['content',]
-        widgets = {'content': Textarea(attrs={"cols": 70, "rows": 2})}
+        fields = [
+            "content",
+        ]
+        widgets = {"content": Textarea(attrs={"cols": 70, "rows": 2})}
+
 
 # class OrderedThoughtForm(forms.ModelForm):
 #     template_name = 'prototype/forms/OrderedThoughtForm.html'
@@ -32,21 +36,24 @@ class SimpleThoughtForm(forms.ModelForm):
 #         model=OrderedRelationShip
 #         fields=['number',]
 
+
 def get_tree(request, location, content=None):
-    context = {'location' : SimpleRelation.objects.get(id=location)}
+    context = {"location": SimpleRelation.objects.get(id=location)}
     if request.htmx:
-        template_name = 'prototype/tree.html'
+        template_name = "prototype/tree.html"
     else:
-        template_name = 'prototype/root.html'
+        template_name = "prototype/root.html"
     return render(request, template_name, context)
+
 
 class SimpleThoughtFormView(View):
     """The FormView for the SimpleThoughtForm:
-        provides actions for
-        get - returns an editable form
-        post - updates the value
-        button actions for
-              add child, add sibling and delete nodes."""
+    provides actions for
+    get - returns an editable form
+    post - updates the value
+    button actions for
+          add child, add sibling and delete nodes."""
+
     model_class = SimpleThought
     model_form_class = SimpleThoughtForm
     relation_model = SimpleRelation
@@ -56,10 +63,10 @@ class SimpleThoughtFormView(View):
         print("HTMX", dir(request.htmx), request.htmx.trigger_name)
         sr_instance = self.relation_model.objects.get(id=location)
         stf = self.model_form_class(instance=sr_instance.content)
-        return render(request, SimpleThoughtForm.template_name, {'form': stf, 'location': location})
+        return render(request, SimpleThoughtForm.template_name, {"form": stf, "location": location})
 
     def patch(self, request, location, content=None):
-        """"add child location to location, provide empty form."""
+        """ "add child location to location, provide empty form."""
         sr_instance = self.relation_model.objects.get(id=location)
         st_instance = self.model_class.objects.create(content="new entry")
         sr_instance.add_child(content=st_instance)
@@ -93,5 +100,3 @@ class SimpleThoughtFormView(View):
             st_instance.delete()
         sr_instance.delete()
         return HttpResponse("")
-
-
