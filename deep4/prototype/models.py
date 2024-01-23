@@ -42,9 +42,9 @@ class SimpleThoughtForm(ModelForm):
         widgets = {'content': Textarea(attrs={"cols": 80, "rows": 20})}
 
 
-class OrderedRelationShip(mp_tree.MP_Node):
-    id = models.UUIDField(default=uuid.uuid4, primary_key=True)
-    number = models.PositiveIntegerField()
-    content = models.ForeignKey(to=SimpleThought, on_delete=models.CASCADE, null=True)
+# class OrderedRelationShip(mp_tree.MP_Node):
+#     id = models.UUIDField(default=uuid.uuid4, primary_key=True)
+#     number = models.PositiveIntegerField()
+#     content = models.ForeignKey(to=SimpleThought, on_delete=models.CASCADE, null=True)
 
 

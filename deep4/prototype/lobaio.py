@@ -13,7 +13,7 @@ from django.views import View
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.forms.widgets import Textarea
-from .models import SimpleRelation, SimpleThought, OrderedRelationShip
+from .models import SimpleRelation, SimpleThought # , OrderedRelationShip
 from treebeard import mp_tree
 
 def get_all_nodes(request):
@@ -26,13 +26,13 @@ class SimpleThoughtForm(forms.ModelForm):
         fields = ['content',]
         widgets = {'content': Textarea(attrs={"cols": 70, "rows": 2})}
 
-class OrderedThoughtForm(forms.ModelForm):
-    template_name = 'prototype/forms/OrderedThoughtForm.html'
-    class Meta:
-        model=OrderedRelationShip
-        fields=['number',]
+# class OrderedThoughtForm(forms.ModelForm):
+#     template_name = 'prototype/forms/OrderedThoughtForm.html'
+#     class Meta:
+#         model=OrderedRelationShip
+#         fields=['number',]
 
-def get_tree(request, location):
+def get_tree(request, location, content=None):
     context = {'location' : SimpleRelation.objects.get(id=location)}
     if request.htmx:
         template_name = 'prototype/tree.html'
