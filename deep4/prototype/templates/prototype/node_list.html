@@ -1,11 +1,17 @@
-{%  extends 'base.html' %}
-{%  block content %}<ul>
-{%  for node in location_list %}
-  {% if node.content %}
-  <li><a href="{%  url 'prototype:simple_tree' node.id node.content.id %}">{{ node.content.content }}</a></li>
-  {%  else %}
-  <li><a href="{%  url 'prototype:blank_location' node.id %}">--</a></li>
-  {%  endif %}
-{%  endfor %}
-</ul>
-{%  endblock content %}
+{% extends 'base.html' %}
+
+{% block content %}
+  <ul>
+    {% for node in location_list %}
+      {% if node.content %}
+        <li>
+          <a href="{% url 'prototype:location:simple_tree' node.id node.content.id %}">{{ node.content.content }}</a>
+        </li>
+      {% else %}
+        <li>
+          <a href="{% url 'prototype:location:blank_location' node.id %}">--</a>
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+{% endblock content %}

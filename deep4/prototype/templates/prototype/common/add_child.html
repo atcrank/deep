@@ -1,5 +1,5 @@
-<button hx-patch="{% url 'prototype:simple_form_add_child' location.id location.content.id %}"
-        hx-target="#cont{{ location.id }}"
+<button hx-patch="{% url 'prototype:location:simple_form_add_child' location.id location.content.id %}"
+        hx-target="#cont-loc{{ location.id }}"
         hx-swap="outerHTML"
         hx-trigger="click"
         title="add child">/</button>

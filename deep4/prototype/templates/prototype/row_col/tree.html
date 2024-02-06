@@ -1,15 +1,14 @@
-<div id="cont-loc{{ location.id }}" class="node" data-jqui="draggable">
-  {% if id %}<div>{{ location.id }}</div>{% endif %}
+<div id="cont-loc{{ location.id }}" class="node row">
   {% if location.content %}
     {% include 'prototype/content_simple_text.html' %}
   {% endif %}
   {% if location.get_children %}
-    <ul id="ul-{{ location.id }}">
+    <div class="col" id="ul-{{ location.id }}">
       {% for newnode in location.get_children %}
         {% with location=newnode rootnode=False %}
-          {% include 'prototype/tree.html' %}
+          {% include 'prototype/row_col/tree.html' %}
         {% endwith %}
       {% endfor %}
-    </ul>
+    </div>
   {% endif %}
 </div>

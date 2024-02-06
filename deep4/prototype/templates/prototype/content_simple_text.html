@@ -1,0 +1,23 @@
+<div id="cont-"
+     "
+     {{ location.content.id }}
+     "
+     hx-get="{% url 'prototype:location:simple_form' location.id location.content.id %}"
+     hx-trigger="click[ctrlKey]"
+     hx-swap="outerHTML">
+  <li>
+    {{ location.content.content }}
+    <span id="controls-{{ location.id }}">
+      {% include 'prototype/common/add_child.html' %}
+      {% include 'prototype/common/add_sibling.html' %}
+      {% include 'prototype/common/delete_element_button.html' %}
+      {% if help or id %}
+        {% include 'prototype/common/hide_help.html' %}
+      {% else %}
+        {% include 'prototype/common/help_button.html' %}
+        {% include 'prototype/common/debug_detail.html' %}
+      {% endif %}
+    </span>
+    {% if help %}<div>{{ help }}</div>{% endif %}
+  </li>
+</div>

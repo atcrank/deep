@@ -1,8 +1,9 @@
 """
 locality of behavior, all in one
 
-A single file that holds the model, form, view and template settings
+A single file that holds the forms and views.
 
+Can we get models and templates in here too?
 """
 
 from django import forms
@@ -11,12 +12,17 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
 
-from .models import SimpleRelation, SimpleThought  # , OrderedRelationShip
+from .models import SimpleRelation, SimpleThought
 
 
-def get_all_nodes(request):
+def get_all_nodes(request, special_mode=None):
     context = {"location_list": SimpleRelation.get_root_nodes()}
-    return render(request, "prototype/root.html", context)
+    template_sub_dir = ""
+    if special_mode:
+        context.update({"special_mode": special_mode})
+    if special_mode == "row_col":
+        template_sub_dir = "row_col/"
+    return render(request, f"prototype/{template_sub_dir}root.html", context)
 
 
 class SimpleThoughtForm(forms.ModelForm):
@@ -27,22 +33,26 @@ class SimpleThoughtForm(forms.ModelForm):
         fields = [
             "content",
         ]
-        widgets = {"content": Textarea(attrs={"cols": 70, "rows": 2})}
+        widgets = {"content": Textarea(attrs={"cols": 70, "rows": 1, "autofocus": True})}
 
 
-# class OrderedThoughtForm(forms.ModelForm):
-#     template_name = 'prototype/forms/OrderedThoughtForm.html'
-#     class Meta:
-#         model=OrderedRelationShip
-#         fields=['number',]
-
-
-def get_tree(request, location, content=None):
+def get_tree(request, location, content=None, special_mode=None):
     context = {"location": SimpleRelation.objects.get(id=location)}
+    template_sub_dir = ""
+    if special_mode == "help":
+        context.update({"help": context["location"].content.__class__.__doc__})
+    elif special_mode == "debug":
+        context.update({"id": context["location"].content_id})
+    elif special_mode == "hide":
+        pass
+    elif special_mode == "row_col":
+        template_sub_dir = "row_col/"
     if request.htmx:
-        template_name = "prototype/tree.html"
+        template_name = f"prototype/{template_sub_dir}tree.html"
     else:
-        template_name = "prototype/root.html"
+        context.update({"location_list": [context["location"]]})
+        template_name = f"prototype/{template_sub_dir}root.html"
+    print("Template_Name", template_name)
     return render(request, template_name, context)
 
 
@@ -58,11 +68,15 @@ class SimpleThoughtFormView(View):
     model_form_class = SimpleThoughtForm
     relation_model = SimpleRelation
 
-    def get(self, request, location, content=None):
+    def get(self, request, location, content):
         """gets a form that holds the editable content"""
-        print("HTMX", dir(request.htmx), request.htmx.trigger_name)
+        print(request, location, content)
         sr_instance = self.relation_model.objects.get(id=location)
-        stf = self.model_form_class(instance=sr_instance.content)
+        match content:
+            case "help":
+                return get_tree(request, sr_instance.id, {"help": location.content.__class__.__doc__})
+            case _:
+                stf = self.model_form_class(instance=sr_instance.content)
         return render(request, SimpleThoughtForm.template_name, {"form": stf, "location": location})
 
     def patch(self, request, location, content=None):
@@ -72,14 +86,18 @@ class SimpleThoughtFormView(View):
         sr_instance.add_child(content=st_instance)
         return get_tree(request, sr_instance.id, st_instance.id)
 
-    def put(self, request, location, content=None):
+    def put(self, request, location=None, content=None):
         """add a sibling node at this depth"""
-        sr_instance = self.relation_model.objects.get(id=location)
         st_instance = self.model_class.objects.create(content="new entry")
-        if sr_instance.is_root():
-            new_sr = self.relation_model.add_root(content=st_instance)
+        if location:
+            sr_instance = self.relation_model.objects.get(id=location)
+            if sr_instance.is_root():
+                new_sr = self.relation_model.add_root(content=st_instance)
+            else:
+                new_sr = sr_instance.get_parent().add_child(content=st_instance)
         else:
-            new_sr = sr_instance.get_parent().add_child(content=st_instance)
+            new_sr = self.relation_model.add_root(content=st_instance)
+
         return get_tree(request, new_sr.id, st_instance.id)
 
     def post(self, request, location, content=None):

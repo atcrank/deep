@@ -6,11 +6,11 @@
 {% endblock custom_js %}
 {% block content %}
   {% block components %}
-    <ul id="all_roots">
+    <div class="col-" id="all_roots">
       {% for location in location_list %}
-        {% include 'prototype/tree.html' %}
+        {% include 'prototype/row_col/tree.html' %}
       {% endfor %}
-    </ul>
+    </div>
     Add a tree
     {% include 'prototype/common/add_root.html' %}
   {% endblock components %}

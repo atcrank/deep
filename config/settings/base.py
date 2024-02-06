@@ -95,7 +95,7 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "deep4.users",
-    "prototype"
+    "deep4.prototype"
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -153,6 +153,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 # STATIC

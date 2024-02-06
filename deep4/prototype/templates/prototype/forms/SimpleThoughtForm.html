@@ -1,6 +1,9 @@
-<form id="form{{ form.instance.id }}"
-     hx-post="{% url 'prototype:simple_form' location form.instance.id %}"
-     hx-swap="outerHTML"
-     hx-trigger="focusout">
-  {{ form.as_p }}
-</form>
+<li>
+  <form id="cont-{{ form.instance.id }}"
+        hx-post="{% url 'prototype:location:simple_form' location form.instance.id %}"
+        hx-swap="outerHTML"
+        hx-trigger="focusout">
+    {{ form.errors }}
+    {{ form.content }}
+  </form>
+</li>

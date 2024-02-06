@@ -13,9 +13,8 @@ This project currently manages nested unordered (informally ordered, I guess) li
 
 Immediate goals:
  - additional methods on each element (show help string from obj.__doc__ for example)
- - make ordered relationship elements (a tree subclass)
  - use content types to make the content item generic
- - parameterise(?) parent and child html tags
+ - page and sub-page objects
  - user-awareness and per object group-permissions
  - django-ninja api setup
 

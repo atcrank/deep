@@ -1,14 +1,13 @@
-import os
-
-import requests
-
 """
 Use this URL list instead of manually downloading static files.
 To run, you can invoke with `python3 pysrc/static/update_static.py`
 
-I would have liked to find the equivalent of ":latest" for libraries
+I would like to find the equivalent of dockers ":latest" tag for libraries
 
 """
+import os
+
+import requests
 
 STATIC_SOURCE = [
     "https://unpkg.com/htmx.org/dist/htmx.min.js",
@@ -21,10 +20,10 @@ STATIC_SOURCE = [
 ]
 
 
-def save_files_from_urls(l=STATIC_SOURCE):
+def save_files_from_urls(source_list=STATIC_SOURCE):
     success = []
     fail = []
-    for url in l:
+    for url in source_list:
         file_type = url.split(".")[-1]
         if file_type not in ["js", "css"]:
             file_type = "js"

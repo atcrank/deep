@@ -1,0 +1,9 @@
+{#  if request.user.is_superuser or request.user.is_staff #}
+<button hx-patch="{% url 'prototype:location:simple_tree' location.id location.content.id 'debug' %}"
+        hx-target="#cont-loc{{ location.id }}"
+        hx-swap="outerHTML"
+        hx-trigger="click"
+        title="debug detail">
+  <small>db</small>
+</button>
+{# endif #}

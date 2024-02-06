@@ -1,18 +1,26 @@
+{% extends "base.html" %}
+
 <!DOCTYPE html>
+{% load static %}
+
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>lobaio</title>
-  <script type="text/javascript" src="{%  static 'js/htmx.min.js' %}"></script>
-
-</head>
-
-<body>
-<h1>Locality</h1>
-<h1>of</h1>
-<h1>Behaviour</h1>
-<h1>All</h1>
-<h1>In</h1>
-<h1>One</h1>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>lobaio</title>
+    {% block javascript %}
+      {{ blocksuper }}
+      <script type="text/javascript" src="{%  static 'js/htmx.min.js' %}"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+      <script src="{% static "jqui-htmx.js" %}"></script>
+    {% endblock javascript %}
+    {% block custom_js %}
+      {{ blocksuper }}
+    {% endblock custom_js %}
+  </head>
+  <body>
+    {% block content %}
+      {{ blocksuper }}
+    {% endblock content %}
+  </body>
 </html>
