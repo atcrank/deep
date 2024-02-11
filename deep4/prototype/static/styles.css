@@ -1,0 +1,33 @@
+.ui-selectee  {background:white;}
+.ui-selecting { background: #FECA40; }
+.ui-selected { background: #F39814; }
+
+ul { line-height: 80%;
+  margin: 1px;
+  padding: 0.1em 0 0.1em 1.0em;
+  width: 100%;
+  border: #1e347b;
+  background-color: rgba(255,205,200,0.2);;
+}
+
+li { line-height: 90%;
+  margin: 1px;
+  padding: 1em 0 1em 1.5em;
+  font-size: 1em;
+  height: 14px;
+  border: #1e347b;
+  background-color: rgba(205,205,255,0.2);
+}
+
+button {
+  border: none;
+  border-radius: 50%;
+  padding: 4px;
+  margin: 0px 0px;
+  display: inline-flex;
+  width:15px;
+  height:15px;
+  align-items: center;
+  color: #0d5aa7;
+  background-color: paleturquoise;
+}

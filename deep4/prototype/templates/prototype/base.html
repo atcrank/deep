@@ -6,7 +6,11 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>lobaio</title>
+    <title>deep</title>
+    {% block css %}
+      {{ block.super }}
+      <link rel="stylesheet" href="{% static 'styles.css' %}" />
+    {% endblock css %}
     {% block javascript %}
       {{ blocksuper }}
       <script type="text/javascript" src="{%  static 'js/htmx.min.js' %}"></script>
@@ -15,7 +19,7 @@
       <script src="{% static "jqui-htmx.js" %}"></script>
     {% endblock javascript %}
     {% block custom_js %}
-      {{ blocksuper }}
+      {{ block.super }}
     {% endblock custom_js %}
   </head>
   <body>

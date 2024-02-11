@@ -16,7 +16,7 @@ urlpatterns = [
     # User management
     path("users/", include("deep4.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
-    path('prototype/', include("prototype.urls", namespace="prototype")),
+    path("prototype/", include("deep4.prototype.urls", namespace="prototype")),
     # Your stuff: custom urls includes go here
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:

@@ -1,5 +1,5 @@
-<button hx-put="{% url 'prototype:simple_form_add_root' %}"
-        hx-target="#cont-loc{{ location.id }}"
+<button hx-put="{{ location.url_for_put }}"
+        hx-target="#{{ location.id_for_html_element }}"
         hx-swap="afterend"
         hx-trigger="click"
         title="add sibling">+</button>

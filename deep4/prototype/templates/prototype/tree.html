@@ -1,12 +1,23 @@
-<div id="cont-loc{{ location.id }}" class="node" data-jqui="draggable">
-  {% if id %}<div>{{ location.id }}</div>{% endif %}
-  {% if location.content %}
+<div id="{{ location.id_for_html_element }}"
+     data-jqui="draggable"
+     class="ui-widget">
+  <li>
     {% include 'prototype/content_simple_text.html' %}
-  {% endif %}
-  {% if location.get_children %}
+    {% if db %}
+      <p>
+        <small>{{ location.id }}</small>
+      </p>
+    {% endif %}
+    {% if help %}
+      <p>
+        <small>{{ help }}</small>
+      </p>
+    {% endif %}
+  </li>
+  {% if location.get_children.exists %}
     <ul id="ul-{{ location.id }}">
       {% for newnode in location.get_children %}
-        {% with location=newnode rootnode=False %}
+        {% with location=newnode %}
           {% include 'prototype/tree.html' %}
         {% endwith %}
       {% endfor %}

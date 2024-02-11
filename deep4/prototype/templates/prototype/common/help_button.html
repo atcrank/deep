@@ -1,5 +1,5 @@
-<button hx-patch="{% url 'prototype:location:simple_tree' location.id location.content.id 'help' %}"
-        hx-target="#cont-loc{{ location.id }}"
+<button hx-get="{{ location.url_for_help }}"
+        hx-target="#{{ location.id_for_html_element }}"
         hx-swap="outerHTML"
         hx-trigger="click"
         title="help">?</button>

@@ -6,14 +6,14 @@
 {% endblock custom_js %}
 {% block content %}
   {% block components %}
-    <div id="all_roots"  class="ui-widget-content">
-      <ul>
-        {% for location in location_list %}
-          {% include 'prototype/tree.html' %}
+    {% if "project" %}
+      <div id="project">
+        {% for struct in page_anchor.get_children %}
+          {% include 'prototype/page_tree.html' %}
         {% endfor %}
-      </ul>
-    </div>
-    Add a tree
+      </div>
+    {% endif %}
+    Add a project
     {% include 'prototype/common/add_root.html' %}
   {% endblock components %}
 {% endblock content %}

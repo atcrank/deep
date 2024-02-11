@@ -1,6 +1,0 @@
-<form id="form{{ form.instance.id }}"
-      hx-post="{% url 'prototype:location:simple_form' location form.instance.id %}"
-      hx-swap="outerHTML"
-      hx-trigger="focusout">
-  {{ orderform }}{{ form }}
-</form>
