@@ -11,6 +11,9 @@ This project currently manages nested unordered (informally ordered, I guess) li
  - add a child  (/)
  - delete self (x)
 
+<img width="1271" alt="image" src="https://github.com/atcrank/deep/assets/26860752/5232f372-94bb-4595-b3e7-125fe2c88c2d">
+
+
 Immediate goals:
  - additional methods on each element (show help string from obj.__doc__ for example)
  - use content types to make the content item generic
