@@ -55,8 +55,13 @@ coverage.xml
 static/css/
 static/js/
 
+jquery-ui.css
+
 htmx.min.js
 idiomorph
+idiomorph.js
+hyperscript.js
+jquery-3.7.0.min.js
 jquery-ui.min.js
 # Sphinx documentation
 docs/_build/
