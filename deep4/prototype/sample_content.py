@@ -1,4 +1,4 @@
-from .models import SimpleThought, SimpleRelation
+from .models import SimpleRelation, SimpleThought
 
 s = SimpleThought.objects.create(content="Root thought.")
 
