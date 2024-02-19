@@ -9,7 +9,9 @@
     <div id="all_roots"  class="ui-widget-content">
       <ul>
         {% for location in location_list %}
-          {% include 'prototype/tree.html' %}
+          {% with content_object=location.content_object %}
+            {% include 'prototype/tree.html' %}
+          {% endwith %}
         {% endfor %}
       </ul>
     </div>

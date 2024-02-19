@@ -56,6 +56,9 @@ $(document).on('htmx:afterSwap', function(event) {
     $this[interaction](options);
   });
 });
+
+     data-jqui="draggable"
+     data-jqui-opts="option cancel .richtextbox"
 */
 
 function add_jq(event) {
@@ -72,12 +75,12 @@ function add_jq(event) {
     }
     else if (interactions) {
       $(id_)[interactions]();
-    }
+    };
   }  );
 }
 
-$(document).on('htmx:afterSwap', add_jq);
-$(document).on('DOMContentLoaded', add_jq);
+document.addEventListener('htmx:afterSwap', add_jq);
+document.addEventListener('DOMContentLoaded', add_jq);
 
 function add_position_updates(event) {
   console.log("size/position update", event.type);
@@ -86,4 +89,4 @@ function add_position_updates(event) {
      console.log("imagine we post:", event.target.parentNode.id, event.target.parentNode.getAttribute("style"), event.target);
   }
 }
-document.addEventListener('mouseup', add_position_updates, false)
+// document.addEventListener('mouseup', add_position_updates, false)

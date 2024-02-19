@@ -1,0 +1,8 @@
+<div id="{{ content_object.id_for_html_element }}"
+     hx-get="{{ content_object.url_for_get }}"
+     hx-trigger="click[altKey]"
+     hx-swap="outerHTML">
+  <span>
+    <pre>(R) {{ content_object.content|safe }}</pre>
+  </span>
+</div>

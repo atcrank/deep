@@ -1,6 +1,6 @@
 <div id="cont-loc{{ location.id }}" class="node row">
   {% if location.content %}
-    {% include 'prototype/content_simple_text.html' %}
+    {% include 'prototype/plaintext/content_display.html' %}
   {% endif %}
   {% if location.get_children %}
     <div class="col" id="ul-{{ location.id }}">

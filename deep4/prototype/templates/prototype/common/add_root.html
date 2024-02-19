@@ -1,5 +1,12 @@
-<button hx-put="{% url 'prototype:simple_form_add_root' %}"
+<button hx-put="{% url 'prototype:add_root_type' "plaintext" %}"
         hx-target="#all_roots"
         hx-swap="beforeend"
         hx-trigger="click"
-        title="add sibling">+</button>
+        title="add sibling"
+        class="crud-buttons">P</button>
+<button hx-put="{% url 'prototype:add_root_type' "richtext" %}"
+        hx-target="#all_roots"
+        hx-swap="beforeend"
+        hx-trigger="click"
+        title="add sibling"
+        class="crud-buttons">R</button>

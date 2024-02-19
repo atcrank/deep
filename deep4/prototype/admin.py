@@ -1,8 +1,8 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import SimpleRelation, SimpleThought, Structure
+from .models import Location, PlainText, RichText
 
-admin.site.register(SimpleThought)
-admin.site.register(SimpleRelation)
-admin.site.register(Structure)
+admin.site.register(PlainText)
+admin.site.register(RichText)
+admin.site.register(Location)

@@ -17,6 +17,8 @@ STATIC_SOURCE = [
     "https://code.jquery.com/ui/1.13.2/jquery-ui.min.js",
     "https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css",
     "https://jqueryui.com/resources/demos/style.css",
+    "https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css",
 ]
 
 

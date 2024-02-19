@@ -1,24 +1,25 @@
 from django.urls import include, path
 
-from .lobaio import SimpleThoughtFormView, get_proj, get_thought_nodes, get_thought_tree
+from deep4.prototype.lobaio import ContentModelFormView, get_tree, get_trees
 
 app_name = "prototype"
 
 content_urls = [
-    path("", get_thought_tree, name="single_tree"),
-    path("<uuid:content>/form", SimpleThoughtFormView.as_view(), name="simple_form"),  # post, delete
-    path("<uuid:content>/add_child", SimpleThoughtFormView.as_view(), name="simple_form_add_child"),  # put
-    path("<uuid:content>/add_sibling", SimpleThoughtFormView.as_view(), name="simple_form_add_sibling"),  # patch
-    path("<uuid:content>/<str:special_mode>", get_thought_tree, name="simple_tree"),  # help, debug
+    path("", get_tree, name="single_tree"),
+    path("add_child", ContentModelFormView.as_view(), name="form_add_child"),  # put
+    path("add_sibling", ContentModelFormView.as_view(), name="form_add_sibling"),  # patch
+    path("form", ContentModelFormView.as_view(), name="content_form"),  # delete
+    path("<str:special_mode>", get_tree, name="mode_tree"),  # help, debug
 ]
 
-location_urls = [
-    path("<uuid:location>/", include((content_urls, "location"))),
-    path("add_root/", SimpleThoughtFormView.as_view(), name="simple_form_add_root"),
-    path("", get_thought_nodes, name="get_thought_nodes"),
+content_forms = [
+    path("form", ContentModelFormView.as_view(), name="content_form"),  # post
 ]
 
 urlpatterns = [
-    path("proj/<uuid:proj_id>/page/<int:page_at>/depth/<int:depth>/<page_no>/", get_proj, name="proj"),
-    path("", include(location_urls)),
+    path("location/<uuid:location>/", include((content_urls, "location"))),
+    path("<str:content_type>/<uuid:content>/", include((content_forms, "content"))),
+    path("<str:content_type>/add_root/", ContentModelFormView.as_view(), name="add_root_type"),
+    path("add_root/", ContentModelFormView.as_view(), name="add_root"),
+    path("", get_trees, name="get_trees"),
 ]

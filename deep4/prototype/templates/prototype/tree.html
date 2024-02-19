@@ -1,8 +1,15 @@
 <div id="{{ location.id_for_html_element }}"
+     class="ui-widget"
      data-jqui="draggable"
-     class="ui-widget">
+     data-jqui-opts="option cancel .richtextbox">
   <li>
-    {% include 'prototype/content_simple_text.html' %}
+    {% with content_object=location.content_object %}
+      {% if location.content_type.model == "plaintext" %}
+        {% include 'prototype/plaintext/content_display.html' %}
+      {% elif location.content_type.model == "richtext" %}
+        {% include 'prototype/richtext/content_display.html' %}
+      {% endif %}
+    {% endwith %}
     {% if db %}
       <p>
         <small>{{ location.id }}</small>
@@ -13,11 +20,12 @@
         <small>{{ help }}</small>
       </p>
     {% endif %}
+    {% include 'prototype/common/control-group.html' %}
   </li>
   {% if location.get_children.exists %}
     <ul id="ul-{{ location.id }}">
       {% for newnode in location.get_children %}
-        {% with location=newnode %}
+        {% with location=newnode content_object=newnode.content_object %}
           {% include 'prototype/tree.html' %}
         {% endwith %}
       {% endfor %}

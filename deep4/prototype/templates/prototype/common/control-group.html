@@ -1,0 +1,11 @@
+<span id="controls-{{ location.id }}" class="button-group">
+  {% include 'prototype/common/add_child.html' %}
+  {% include 'prototype/common/add_sibling.html' %}
+  {% include 'prototype/common/delete_element_button.html' %}
+  {% if help or db %}
+    {% include 'prototype/common/hide_help.html' %}
+  {% else %}
+    {% include 'prototype/common/help_button.html' %}
+    {% include 'prototype/common/debug_detail.html' %}
+  {% endif %}
+</span>
