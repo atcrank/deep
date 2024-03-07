@@ -6,14 +6,17 @@
 {% endblock custom_js %}
 {% block content %}
   {% block components %}
-    <div id="all_roots"  class="ui-widget-content">
-      <ul>
+    <div id="all_roots">
+      <ol id="all_{{ location_list.model.name }}s"
+          class="ui-widget"
+          data-jqui="sortable"
+          data-jqui-opts="option cancel span">
         {% for location in location_list %}
           {% with content_object=location.content_object %}
-            {% include 'prototype/tree.html' %}
+            {% include 'prototype/tree_ol.html' %}
           {% endwith %}
         {% endfor %}
-      </ul>
+      </ol>
     </div>
     Add a tree
     {% include 'prototype/common/add_root.html' %}

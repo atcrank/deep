@@ -1,26 +1,21 @@
 Immediate goals
 ---------------
 
- - secure version for html in django textfield.
- - refactor ContentModelFormView into LocationModelFormView and ContentModelFormView - the big split in 'setup()' is leading.
+
+ - refactor ContentModelFormView into LocationModelFormView and ContentModelFormView - the big split in 'setup()' is leading. (done)
 
  - improvements to jqui:
-   - prevent application to RichTextForm
-   - correct sortable classes so that they don't apply 'changing' color to the parent
-   - work out how to communicate and store location and size (easy)
-   - work out how to communicate sortable actions to tree move api
 
- - parameterise(?) parent and child html tags. (Not possible in Django Template Language, because undesirable for security.  The concept is that the tree structure is applicable as ul-li, but also trivially, ol-li, and less trivially, col-row-col tiling so the first and last trees are sidebars.
- - user-awareness and per object group-permissions
-   possible patterns:
-     - Location with a User awareness and the option to root a new location tree as the content_object. This should cope with multiple users with multiple inputs.
-     - ownership of content, simultaneous editing, diffing?
-       - start with labeled border class
-     - reuse target-groups pattern, override Mp_Node.add_child() to copy the target_groups down.
+   - prevent application of these effects on RichTextForm because it prevents drag-select of text. (added jqui-opts="option cancel span" but only handles setting one option)
+   - how to organise:
 
- - page and sub-page tree
-   - some Location roots are marked as Project roots, by default 1st-level children are individual pages.
-   -
+      - sortable vs draggable vs selectable need different options set
+      - currently options depend on the template e.g. option cancel span
+      - where to hold data setting children to sortable or selectable or draggable
+      - currently hardcoded - all siblings are 'sortable' but sort outcomes are not saved.
+
+ - Templates. Goal would be to have tree.html as a fundamental template but whether its ul-li or div-div or details-summary or table-tr-td(?)
+
  - REUSE strategy for project, page, page-sequence reuse for repeated tasks
  - INTERFACES for interpretation using user input as evidence base
 

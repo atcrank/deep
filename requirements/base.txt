@@ -5,6 +5,7 @@ whitenoise  # https://github.com/evansd/whitenoise
 redis  # https://github.com/redis/redis-py
 hiredis  # https://github.com/redis/hiredis-py
 uvicorn[standard]  # https://github.com/encode/uvicorn
+nh3
 
 # Django
 # ------------------------------------------------------------------------------

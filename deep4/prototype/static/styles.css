@@ -7,7 +7,7 @@ ul {
   padding: 0.1em 0 0.1em 1.0em;
   width: 100%;
   border: #1e347b;
-  background-color: rgba(255,205,200,0.2);;
+   /*background-color: rgba(255,205,200,0.2);*/
 }
 
 li {
@@ -19,6 +19,7 @@ li {
   border: #1e347b;
   background-color: rgba(205,205,255,0.2);
 }
+
 
 span {
   float:left;
@@ -35,7 +36,7 @@ button.crud-buttons {
   width: 25px;
   align-items: center;
   color: #0d5aa7;
-  background-color: paleturquoise;
+  background-color: rgba(205,205,255,0.6);
 }
 
 span.button-group {
@@ -50,18 +51,11 @@ span.button-group {
 img.intLink { border: 0; }
 #toolBar1 select { font-size:10px; }
 .richtextbox {
-  width: 540px;
-  height: 200px;
   border: 1px #000000 solid;
   padding: 12px;
   overflow: scroll;
 }
-.richtextbox  {
-  padding: 0;
-  margin: 0;
-  min-width: 498px;
-  min-height: 200px;
-}
+
 #editMode label { cursor: pointer; }
 
 /* end html editor */

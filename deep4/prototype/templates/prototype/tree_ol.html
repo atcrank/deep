@@ -1,5 +1,5 @@
-<div id="{{ location.id_for_html_element }}">
-  <li id="li-{{ location.id_for_html_element }}">
+<li id="{{ location.id_for_html_element }}">
+  <span>
     {% with content_object=location.content_object %}
       {% if location.content_type.model == "plaintext" %}
         {% include 'prototype/plaintext/content_display.html' %}
@@ -8,18 +8,18 @@
       {% endif %}
     {% endwith %}
     {% include 'prototype/common/extra_debugs.html' %}
-    {% include 'prototype/common/control-group.html' %}
-  </li>
+  </span>
+  {% include 'prototype/common/control-group.html' %}
   {% if location.get_children.exists %}
-    <ul id="ul-{{ location.id }}"
+    <ol id="ul-{{ location.id }}"
         class="ui-widget"
         data-jqui="sortable"
-        data-jqui-opts="option cancel li">
+        data-jqui-opts="option cancel span">
       {% for newnode in location.get_children %}
         {% with location=newnode content_object=newnode.content_object %}
-          {% include 'prototype/tree.html' %}
+          {% include 'prototype/tree_ol.html' %}
         {% endwith %}
       {% endfor %}
-    </ul>
+    </ol>
   {% endif %}
-</div>
+</li>

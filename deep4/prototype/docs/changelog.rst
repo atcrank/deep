@@ -1,6 +1,9 @@
 recent changes
 WARNING: RECENT CHANGES DISARM BASIC DJANGO SAFETY PROVISIONS IN THE RICHTEXT MODEL
 
+- further refactoring to isolate Location logic from Content logic
+- added a project / pages views construing a root Location as a Project, and first-level Children as defining 'pages'
+
 - replaced SimpleRelation with Location with a generic Foreign Key pointing to different content types
      - PlainText, essentially the same is Simple_Thought
      - RichText, a new type using an old mozilla html editor for the form.  uses execCommand on the frontend (deprecated
@@ -23,4 +26,5 @@ WARNING: RECENT CHANGES DISARM BASIC DJANGO SAFETY PROVISIONS IN THE RICHTEXT MO
 - additional methods on each element (show help string from obj.__doc__ for example) (tick, completed)
 - make ordered relationship elements (a tree subclass)  (MP_Node index is already ordered) (tick, learned something)
 - use content types to make the content item generic (tick, except excluding self-referential loops)
-- django-ninja api setup
+- django-ninja api setup  # Broke spectacular API
+- secure version for html in django textfield.

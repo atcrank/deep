@@ -111,7 +111,9 @@
         {% endfor %}
       {% endif %}
       {% block content %}
-        <p>Use this document as a way to quick start any new project.</p>
+        <p>
+          The only thing to see here is the prototype, a <a href="{% url 'prototype:home' %}">basic tree editor thing.</a>  Alt-click to edit the text, buttons, and you can drag to sort siblings.
+        </p>
       {% endblock content %}
     </div>
     <!-- /container -->
