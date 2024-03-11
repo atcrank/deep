@@ -59,6 +59,9 @@ $(document).on('htmx:afterSwap', function(event) {
 
      data-jqui="draggable"
      data-jqui-opts="option cancel .richtextbox"
+
+ apply multiple options with ";" sep.
+ e.g. data-jqui-opts="option cancel span;option axis y;"  will break if extra space after ";"
 */
 
 function add_jq(event) {
@@ -75,23 +78,27 @@ function add_jq(event) {
     console.log("adding", interactions, "with", interaction_options, "to", id_)
 
     if ((interactions) && (interaction_options)) {
-      console.log("options", interaction_options.split(" "));
-      $(id_)[interactions]()[interactions](...interaction_options.split(" "));
+      console.log("optionset", interaction_options.split(";"));
+      let ios = interaction_options.split(";")
+      ios.forEach((iopt) => { console.log("iopt:", iopt, iopt.split(" ").length);
+        if (iopt.split(" ").length === 3) {
+          console.log("iopt.length == 3:", iopt, iopt.length);
+      $(id_)[interactions]()[interactions](...iopt.split(" "));
+      console.log("ios applied:", iopt.split(" ")[1], $(id_)["sortable"]("option", iopt.split(" ")[1]));
+      }});
     }
-    // if ((interactions) && (interaction_options)) {
-    //   console.log("options", interaction_options.split(" "));
-    //   $(id_)[interactions]()[interactions](...interaction_options.split(" "));
-    // }
-    if (interactions) {
+
+    else if ((interactions) && not (interaction_options)) {
         console.log("adding", interactions, "to", id_)
       $(id_)[interactions]();
     };
+
   }  );
 }
 
 // document.addEventListener('htmx:afterSwap', add_jq);
 document.addEventListener('DOMContentLoaded', add_jq);
-
+document.addEventListener('afterSettle', add_jq);
 function add_position_updates(event) {
   console.log("size/position update", event.type);
   if (event.type === "mouseup"){
@@ -106,4 +113,4 @@ function add_position_updates(event) {
          "\n right-", right_of_self);
   }
 }
-document.addEventListener('mouseup', add_position_updates, false)
+document.addEventListener('mouseup', add_position_updates, false);

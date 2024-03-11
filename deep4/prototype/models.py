@@ -17,7 +17,7 @@ attributes = deepcopy(nh3.ALLOWED_ATTRIBUTES)
 attributes["img"].add("data-invert")
 nh3.clean("<img src='example.jpeg' data-invert=true>", attributes=attributes)
 
-TODO: Is it a security problem to allow font attributes or styles?
+TODO: Is it a security problem to allow e.g. font attributes or styles?
 """
 
 import uuid

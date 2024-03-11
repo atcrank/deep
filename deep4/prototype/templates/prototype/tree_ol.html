@@ -14,7 +14,7 @@
     <ol id="ul-{{ location.id }}"
         class="ui-widget"
         data-jqui="sortable"
-        data-jqui-opts="option cancel span">
+        data-jqui-opts="option cancel span;option axis y;">
       {% for newnode in location.get_children %}
         {% with location=newnode content_object=newnode.content_object %}
           {% include 'prototype/tree_ol.html' %}
