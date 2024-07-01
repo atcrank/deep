@@ -25,3 +25,4 @@ django-htmx
 django-treebeard
 django-ninja
 django-html_sanitizer
+channels[daphne]
