@@ -100,17 +100,30 @@ function add_jq(event) {
 document.addEventListener('DOMContentLoaded', add_jq);
 document.addEventListener('afterSettle', add_jq);
 function add_position_updates(event) {
-  console.log("size/position update", event.type);
-  if (event.type === "mouseup"){
-     //console.log("hit mouseup", event.target.parentNode.getAttribute("style"));
-     //console.log("imagine we post:", event.target.parentNode.id, event.target.parentNode.getAttribute("style"), event.target);
-    console.log("event", event)
-     let left_of_self = event.target.previousElementSibling;
-     let right_of_self = event.target.nextElementSibling;
-
-     console.log("sortable - post:\n self", event.target,
-         "\n left-", left_of_self,
-         "\n right-", right_of_self);
-  }
+    event.stopPropagation();
+  console.log("size/position update", event.type, event.target.tagName);
+  /*
+  if ((event.type === "mouseup")&&(event.target.tagName == "LI")){
+      let self = document.createElement("input");
+         self.name = "self";
+         self.value = event.target.getAttribute("id");
+         self.hidden = "true";
+         self.type="text"
+     let left_of_self = document.createElement("input");
+         left_of_self.name = "left";
+         left_of_self.value =  event.target.previousElementSibling ? event.target.previousElementSibling.getAttribute("id") : null;
+         left_of_self.hidden = "true";
+         left_of_self.type="text"
+     let right_of_self = document.createElement("input");
+         right_of_self.name = "right";
+         right_of_self.value = event.target.nextElementSibling ? event.targe.nextElementSiblin.getAttribute("id") : null;
+         right_of_self.hidden = "true";
+         right_of_self.type="text"
+     let span = event.target.appendChild(document.createElement("span"));
+     span.appendChild(self);
+     span.appendChild(left_of_self);
+     span.appendChild(right_of_self);
+     htmx.process(event.target);
+  }*/
 }
 document.addEventListener('mouseup', add_position_updates, false);

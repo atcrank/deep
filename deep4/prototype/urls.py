@@ -1,6 +1,12 @@
 from django.urls import include, path
 
-from deep4.prototype.lobaio import ContentModelFormView, LocationView, get_trees, page_view, project_view
+from deep4.prototype.lobaio import (
+    ContentModelFormView,
+    LocationView,
+    get_trees,
+    page_view,
+    project_view,
+)
 
 app_name = "prototype"
 
@@ -18,7 +24,7 @@ location_urls = [
     path("add_sibling", LocationView.as_view(), name="add_sibling"),  # patch
     path("delete", LocationView.as_view(), name="delete"),  # delete
     path("<str:special_mode>", LocationView.as_view(), name="mode_tree"),  # help, debug
-    path("<uuid:target_loc>/<str:loc_name>", LocationView.as_view(), name="move"),  # post
+    path("move", LocationView.as_view(), name="move"),  # post
 ]
 
 # content_forms = [
@@ -29,8 +35,12 @@ urlpatterns = [
     path("location/<uuid:location>/", include((location_urls, "location"))),
     # path("location2/<uuid:location>/", include((location_urls, "location2"))),
     path("<str:content_type>/<uuid:content>/", include((content_urls, "content"))),
-    path("<str:content_type>/add_root/", ContentModelFormView.as_view(), name="add_root_type"),
-    path("add_root/", ContentModelFormView.as_view(), name="add_root"),
+    path(
+        "<str:content_type>/add_root/",
+        ContentModelFormView.as_view(),
+        name="add_root_type",
+    ),
+    path("add_root/", LocationView.as_view(), name="add_root"),
     path("", get_trees, name="home"),
     path("project/<uuid:location>/<int:page_no>/", page_view, name="page"),
     path("project/<uuid:location>/", project_view, name="project"),

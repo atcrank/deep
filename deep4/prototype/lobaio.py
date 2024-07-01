@@ -23,30 +23,6 @@ def get_trees(request, special_mode=None):
     return render(request, f"prototype/{template_sub_dir}root.html", context)
 
 
-# def get_tree(request, location, special_mode=None):
-#     model_class = Location
-#     loc = model_class.objects.get(id=location)
-#     context = {"location": loc, "content_object": loc.content_object}
-#     template_sub_dir = ""
-#     if special_mode == "help":
-#         context.update({"help": context["location"].content_object.__class__.__doc__})
-#     elif special_mode == "debug":
-#         context.update({"db": f"loc={context['location'].id}; content= {context['location'].content_object.id}"})
-#     elif special_mode == "hide":
-#         print("hide button")
-#
-#     if request.htmx and not request.POST:
-#         template_name = "prototype/tree_ol.html"
-#     elif request.POST:
-#         template_name = f"prototype/{location.content_type.model}content_display.html"
-#     else:
-#         context.update({"location_list": [context["location"]]})
-#         template_name = f"prototype/{template_sub_dir}tree_ol.html"
-#
-#     print(f"{context=}-{template_name=}")
-#     return render(request, template_name, context)
-
-
 class PlainTextForm(forms.ModelForm):
     template_name = "prototype/plaintext/PlainTextForm.html"
 
@@ -55,7 +31,9 @@ class PlainTextForm(forms.ModelForm):
         fields = [
             "content",
         ]
-        widgets = {"content": Textarea(attrs={"cols": 70, "rows": 1, "autofocus": True})}
+        widgets = {
+            "content": Textarea(attrs={"cols": 70, "rows": 1, "autofocus": True})
+        }
 
 
 class RichTextForm(forms.ModelForm):
@@ -78,62 +56,91 @@ class LocationView(View):
     """
 
     def setup(self, request, *args, **kwargs):
-        super().setup(request, *args, **kwargs)
+        print(f"LocationViewSetup - {kwargs=}")
+        super().setup(self, request, *args, **kwargs)
         if kwargs.get("location"):
             self.location_model_class = Location
-            self.location = self.location_model_class.objects.get(id=kwargs.get("location"))
+            self.location = self.location_model_class.objects.get(
+                id=kwargs.get("location")
+            )
             self.content = self.location.content_object
             self.model_class = self.content.__class__
             self.model_form_class = FORMS[self.location.content_type.model]
-            self.template = self.content.default_template
+            self.template = "prototype/root.html"
 
     def get(self, request, location=None, special_mode=None):
         # something to do get_tree and get_trees
         if location:
             loc = Location.objects.get(id=location)
-            context = {"location": loc, "content_object": loc.content_object}
+            context = {
+                "location": loc,
+                "content_object": loc.content_object,
+                "location_list": [loc],
+            }
         else:
             loc = Location.get_root_nodes()
             context = {"location": loc, "content_object": None}
         template_sub_dir = ""
         if special_mode == "help":
-            context.update({"help": context["location"].content_object.__class__.__doc__})
+            context.update(
+                {"help": context["location"].content_object.__class__.__doc__}
+            )
         elif special_mode == "debug":
-            context.update({"db": f"loc={context['location'].id}; content= {context['location'].content_object.id}"})
+            context.update(
+                {
+                    "db": f"loc={context['location'].id}; content= {context['location'].content_object.id}"
+                }
+            )
         elif special_mode == "hide":
             print("hide button")
 
         if request.htmx and not request.POST:
-            template_name = "prototype/tree_ol.html"
+            self.template = "prototype/tree.html"
         elif request.POST:
-            template_name = f"prototype/{location.content_type.model}content_display.html"
-        else:
+            self.template = (
+                f"prototype/{location.content_type.model}content_display.html"
+            )
+        if not location:
             context.update({"location_list": [context["location"]]})
             template_name = f"prototype/{template_sub_dir}root.html"
-        print(f"{context=}-{template_name=}")
-        return render(request, template_name, context)
+            print(f"{context=}-{template_name=}")
+        return render(request, self.template, context)
 
     def patch(self, request, location, special_mode=None):
         """ "add child location to location, provide default content."""
         pt_instance = self.model_class.objects.create(content="new child")
-        self.location.add_child(content_object=pt_instance)
+        new_loc = self.location.add_child(content_object=pt_instance)
+        new_loc.frame = self.location.frame
+        new_loc.save()
         return self.get(request, self.location.id)
 
     def put(self, request, location=None, special_mode=None):
-        """add a sibling node at this depth"""
+        """add a sibling node at this depth. including new root nodes"""
         content_instance = self.model_class.objects.create(content="new sibling")
         if location:
             loc_instance = self.location_model_class.objects.get(id=location)
             if loc_instance.is_root():
-                new_loc = self.location_model_class.add_root(content_object=content_instance)
+                new_loc = self.location_model_class.add_root(
+                    content_object=content_instance
+                )
             else:
-                new_loc = loc_instance.get_parent().add_child(content_object=content_instance)
+                new_loc = loc_instance.get_parent().add_child(
+                    content_object=content_instance
+                )
+            new_loc.frame = loc_instance.frame
         else:
-            new_loc = self.location_model_class.add_root(content_object=content_instance)
-
+            new_loc = self.location_model_class.add_root(
+                content_object=content_instance
+            )
+            new_loc.frame = self.location.frame
+        new_loc.save()
         return self.get(request, new_loc.id)
 
-    def delete(self, request, location):
+    def post(self, request, location, special_mode=None):
+        print("MOVE POST", request, dir(request), request.htmx)
+        return HttpResponse("moved")
+
+    def delete(self, request, location, special_mode=None):
         """delete this node and the nodes below it."""
         # I believe this deletes sub-locations but maybe not content  ??
         self.location.delete()
@@ -162,6 +169,16 @@ class ContentModelFormView(View):
         """gets a form that holds the editable content"""
         stf = self.model_form_class(instance=self.content)
         return render(request, self.model_form_class.template_name, {"form": stf})
+
+    def put(self, request, content_type, special_mode=None):
+        """add typed root locationa and content_object"""
+        content_object = self.model_class.objects.create()
+        Location.add_root(content_object=content_object)
+        return render(
+            request,
+            template_name=f"prototype/{content_type}/content_display.html",
+            context={"content_object": content_object},
+        )
 
     def post(self, request, content_type, content, special_mode=None):
         """update the content of the node."""
@@ -192,5 +209,6 @@ def project_view(request, location):
     project = Location.objects.get(id=location)
     if not project.is_root():
         return "Location is not a project."
-    project.get_children()  # refacto
-    return LocationView.as_view()(request, location)
+    project.get_children()  # refactor?
+    print(f"calling locationView with {location=}")
+    return LocationView.as_view()(request, location=location)

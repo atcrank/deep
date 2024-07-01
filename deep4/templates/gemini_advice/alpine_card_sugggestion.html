@@ -1,0 +1,42 @@
+<script src="//unpkg.com/alpinejs" defer></script>
+<div x-data="{ text: '{{ concept.name }}', x: 0, y: 0, editing: false }"
+     x-init=" $el.style.left = '{{ concept.x }}px'; $el.style.top = '{{ concept.y }}px'; $watch('text', (value) => { updateConceptText('{{ concept.id }}', value); }); "
+     class="concept-card"
+     x-bind:style="{ left: x + 'px', top: y + 'px' }"
+     @pointerdown.prevent=" dragging = true; startX = $event.clientX - x; startY = $event.clientY - y; "
+     @pointermove.window=" if (dragging) { x = $event.clientX - startX; y = $event.clientY - startY; updateConceptPosition('{{ concept.id }}', x, y); } "
+     @pointerup.window="dragging = false">
+  <div x-show="!editing" @dblclick="editing = true">
+    <span x-text="text"></span>
+  </div>
+  <input x-show="editing"
+         x-model="text"
+         type="text"
+         @blur="editing = false; $el.focus()" />
+</div>
+<script>
+  function updateConceptText(conceptId, text) {
+    fetch(`/update_concept/${conceptId}/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: text
+      })
+    });
+  }
+
+  function updateConceptPosition(conceptId, x, y) {
+    fetch(`/update_concept/${conceptId}/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        x: x,
+        y: y
+      })
+    });
+  }
+</script>

@@ -29,6 +29,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.urls import reverse
+from django.utils.safestring import mark_safe
 from treebeard import mp_tree
 
 
@@ -37,12 +38,13 @@ class HtmlSanitizedCharField(forms.CharField):
     allowed_tags.add("font")
     allowed_attributes = deepcopy(nh3.ALLOWED_ATTRIBUTES)
     allowed_attributes.update({"font": {"size", "color", "style"}})
-    print(f"{allowed_attributes=}")
 
     def to_python(self, value):
         value = super().to_python(value)
         if value not in self.empty_values:
-            value = nh3.clean(value, tags=self.allowed_tags, attributes=self.allowed_attributes)
+            value = nh3.clean(
+                value, tags=self.allowed_tags, attributes=self.allowed_attributes
+            )
         return value
 
 
@@ -105,17 +107,67 @@ class RichText(models.Model):
         return f"cont-{self.id}"
 
 
+LI = "li"
+UL = "ul"
+DIVROW = "div class='row border'"
+DIVCOL = "div class='col-sm border'"
+SVG = "svg"
+H1 = "h1"
+H3 = "h3"
+H5 = "h5"
+
+NODE_TAG_CHOICES = (
+    (LI, "list item"),
+    (DIVROW, "row"),
+    (DIVCOL, "column"),  # good for Node
+    (H1, "1 - heading"),
+    (H3, "3 - heading"),
+    (H5, "5 - heading"),
+)
+
+CHILDREN_TAG_CHOICES = (
+    (UL, "list"),
+    (DIVROW, "row"),
+    (DIVCOL, "column"),
+)  # good for children
+
+
+class Frame(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    name = models.TextField()
+    short_description = models.TextField()
+    child_group_tag = models.TextField(default="ul", choices=CHILDREN_TAG_CHOICES)
+    child_element_tag = models.TextField(default="li", choices=NODE_TAG_CHOICES)
+
+    def __str__(self):
+        return self.name
+
+    def child_element_tag_open(self):
+        return mark_safe(f"<{self.child_element_tag}")
+
+    def child_element_tag_close(self):
+        return mark_safe(f"</{self.child_element_tag}>")
+
+    def children_tag_open(self):
+        return mark_safe(f"<{self.child_group_tag}")
+
+    def children_tag_close(self):
+        return mark_safe(f"</{self.child_group_tag}>")
+
+
 class Location(mp_tree.MP_Node):
     """
-    sr has one SimpleThought + one parent sr and 0-many children sr
-    keeping it as simple as possible
+    Location objects anchor content objects in a tree and wrap it in a variable node_tag and a
     """
 
     id = models.UUIDField(default=uuid.uuid4, primary_key=True)
-    content_type = models.ForeignKey(to=ContentType, on_delete=models.CASCADE, null=True)
+    content_type = models.ForeignKey(
+        to=ContentType, on_delete=models.CASCADE, null=True
+    )
     object_id = models.UUIDField()
     content_object = GenericForeignKey("content_type", "object_id")
-    default_template = "prototype/tree_ol.html"
+    frame = models.ForeignKey(Frame, on_delete=models.CASCADE, null=True, blank=True)
+    default_template = "prototype/tree.html"
     name = "Location"
 
     # add_child
@@ -123,7 +175,9 @@ class Location(mp_tree.MP_Node):
         return reverse("prototype:location")
 
     def url_for_get(self):
-        return reverse("prototype:content_form", kwargs={"content_object": self.content_object.id})
+        return reverse(
+            "prototype:content_form", kwargs={"content_object": self.content_object.id}
+        )
 
     def url_for_debug(self):
         return reverse(
@@ -158,4 +212,5 @@ class Location(mp_tree.MP_Node):
         return reverse("prototype:location:delete", kwargs={"location": self.id})
 
     def id_for_html_element(self):
-        return f"cont-loc-{ self.id }"
+        # consider use of format_html here
+        return f"loc-{ self.id }"

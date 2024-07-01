@@ -1,5 +1,14 @@
-<div id="{{ location.id_for_html_element }}">
-  <li id="li-{{ location.id_for_html_element }}">
+{{ location.frame.child_element_tag_open }}
+id="{{ location.id_for_html_element }}"
+hx-post="{% url 'prototype:location:move' location.id %}"
+hx-trigger="mouseup delay:1s"
+hx-swap="none"
+name="content{{ location.id }}"
+class="border"
+>
+<div class="input-wrapper">
+  <label for="content{{ location.id }}">[writer of {{ location.content_object.content }}]</label>
+  <span>
     {% with content_object=location.content_object %}
       {% if location.content_type.model == "plaintext" %}
         {% include 'prototype/plaintext/content_display.html' %}
@@ -8,18 +17,20 @@
       {% endif %}
     {% endwith %}
     {% include 'prototype/common/extra_debugs.html' %}
-    {% include 'prototype/common/control-group.html' %}
-  </li>
+  </span>
+  {% include 'prototype/common/control-group.html' %}
   {% if location.get_children.exists %}
-    <ul id="ul-{{ location.id }}"
-        class="ui-widget"
-        data-jqui="sortable"
-        data-jqui-opts="option cancel li">
-      {% for newnode in location.get_children %}
-        {% with location=newnode content_object=newnode.content_object %}
-          {% include 'prototype/tree.html' %}
-        {% endwith %}
-      {% endfor %}
-    </ul>
+    {{ location.frame.children_tag_open }}
+    id="ul-{{ location.id }}"
+    class="ui-widget"
+    data-jqui="sortable"
+    data-jqui-opts="option cancel span;">
+    {% for newnode in location.get_children %}
+      {% with location=newnode content_object=newnode.content_object %}
+        {% include 'prototype/tree.html' %}
+      {% endwith %}
+    {% endfor %}
+    {{ location.frame.children_tag_close }}
   {% endif %}
 </div>
+{{ location.frame.child_element_tag_close }}
