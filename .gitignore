@@ -86,6 +86,9 @@ py311_env/
 # mypy
 .mypy_cache/
 
+# big ml files
+ml_models/
+*.gguf
 
 ### Node template
 # Logs
