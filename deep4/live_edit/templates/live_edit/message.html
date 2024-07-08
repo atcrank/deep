@@ -1,0 +1,6 @@
+<div id="chatitem-{{ message_id }}"
+     class="input-wrapper"
+     hx-swap-oob="beforeend:#chat_room">
+  <label for="message-{{ message_id }}">[writer of {{ message.user.username }}]</label>
+  <div id="message-{{ message_id }}">{{ message }}</div>
+</div>

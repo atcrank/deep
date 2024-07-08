@@ -5,14 +5,16 @@ To run, you can invoke with `python3 pysrc/static/update_static.py`
 I would like to find the equivalent of dockers ":latest" tag for libraries
 
 """
+
 import os
 
 import requests
 
 STATIC_SOURCE = [
     "https://unpkg.com/htmx.org/dist/htmx.min.js",
-    "https://unpkg.com/idiomorph@3.0",
-    "https://unpkg.com/hyperscript.org@0.9.12",
+    "https://unpkg.com/htmx.org/dist/ext/ws.js",
+    "https://unpkg.com/idiomorph",
+    "https://unpkg.com/hyperscript.org",
     "https://code.jquery.com/jquery-3.7.0.min.js",
     "https://code.jquery.com/ui/1.13.2/jquery-ui.min.js",
     "https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css",
@@ -28,12 +30,18 @@ def save_files_from_urls(source_list=STATIC_SOURCE):
     for url in source_list:
         file_type = url.split(".")[-1]
         if file_type not in ["js", "css"]:
-            file_type = "js"
-        save_dir = f"./deep4/static/{file_type}"
+            file_folder = "js"
+            add_type = True
+        else:
+            file_folder = file_type
+            add_type = False
+        save_dir = f"./deep4/static/{file_folder}"
         if not os.path.exists(save_dir):
             os.makedirs(save_dir)
         file_name = url.split("/")[-1]
         file_name.rstrip("@.0123456789")
+        if add_type:
+            file_name = file_name + "." + file_folder
         save_path = os.path.join(save_dir, file_name)
         try:
             r = requests.get(url)

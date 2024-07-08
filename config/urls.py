@@ -11,13 +11,16 @@ from deep4.prototype.api import api
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
-    path("about/", TemplateView.as_view(template_name="pages/about.html"), name="about"),
+    path(
+        "about/", TemplateView.as_view(template_name="pages/about.html"), name="about"
+    ),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
     path("users/", include("deep4.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     path("prototype/", include("deep4.prototype.urls", namespace="prototype")),
+    path("live_edit/", include("deep4.live_edit.urls", namespace="live_edit")),
     # Your stuff: custom urls includes go here
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:

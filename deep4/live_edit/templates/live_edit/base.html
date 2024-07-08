@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>deep</title>
+    {% block css %}
+      {{ block.super }}
+      <link rel="stylesheet" href="{% static 'styles.css' %}" />
+    {% endblock css %}
+    {% block javascript %}
+      {{ blocksuper }}
+      <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+      <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/ws.js"></script>
+      <script src="{% static "richtexteditor.js" %}"></script>
+      <script>
+        window.addEventListener("DOMContentLoaded", (e) => {
+          let chatbox = document.getElementById("chatform");
+          chatbox.addEventListener("htmx:wsBeforeSend", (event) => {
+            console.log("Event triggered:", event);
+
+          });
+          chatbox.addEventListener("htmx:wsConfigSend", (event) => {
+            console.log("Event triggered:", event);
+
+          });
+          chatbox.addEventListener("htmx:wsAfterSend", (event) => {
+            console.log("Event triggered:", event);
+
+          });
+          chatbox.addEventListener("htmx:wsBeforeMessage", (event) => {
+            console.log("Event triggered:", event);
+
+          });
+          chatbox.addEventListener("htmx:wsAfterMessage", (event) => {
+            console.log("Event triggered:", event);
+
+          });
+        })
+      </script>
+    {% endblock javascript %}
+    {% block custom_js %}
+      {{ block.super }}
+    {% endblock custom_js %}
+  </head>
+  <body>
+    {% block content %}
+      {{ blocksuper }}
+      <div id="websockspace" hx-ext="ws" ws-connect="/ws/chatroom/">
+        <div id="chat_room">...</div>
+        <div id="chatform" hx-trigger="keyup">
+          <input name="chatmessage"  ws-send />
+        </div>
+      </div>
+    {% endblock content %}
+  </body>
+</html>

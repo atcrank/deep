@@ -73,6 +73,9 @@
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'about' %}">About</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'live_edit:index' %}">Live Edit</a>
+              </li>
               {% if request.user.is_authenticated %}
                 <li class="nav-item">
                   <a class="nav-link" href="{% url 'users:detail' request.user.pk %}">{% translate "My Profile" %}</a>

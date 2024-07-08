@@ -100,6 +100,7 @@ LOCAL_APPS = [
     "deep4.users",
     "deep4.prototype",
     "deep4.reflect",
+    "deep4.live_edit",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
